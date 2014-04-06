@@ -15,40 +15,40 @@ class PaintGraph:
         pygame.draw.line(self.window, (0, 255, 0), (35, 10), (35, self.HEIGHT-25))
         pygame.draw.line(self.window, (0, 255, 0), (35, self.HEIGHT-25), (self.WIDTH-155,
                          self.HEIGHT-25))
-	font = pygame.font.SysFont(None, 25)
-	x = 25
+        font = pygame.font.SysFont(None, 25)
+        x = 25
         for char in chars:
-	    text = font.render(char, True, (0, 255, 0))
-	    x += self.SCALE_WIDTH
-	    self.window.blit(text,(x,458))
-	pygame.display.flip()
+            text = font.render(char, True, (0, 255, 0))
+            x += self.SCALE_WIDTH
+            self.window.blit(text,(x,458))
+        pygame.display.flip()
     def y_value(self):
-	font = pygame.font.SysFont(None, 25)
+        font = pygame.font.SysFont(None, 25)
         i = 0
         if self.scale_times == 0:
             text = font.render(chr(48), True, (0, 255, 0))
-	    self.window.blit(text,(10,445))
-	    text = font.render(chr(49), True, (0, 255, 0))
-	    self.window.blit(text,(10,0))
+            self.window.blit(text,(10,445))
+            text = font.render(chr(49), True, (0, 255, 0))
+            self.window.blit(text,(10,0))
         else:
-	    text = font.render("0.0", True, (0, 255, 0))
-	    self.window.blit(text,(0,445))
+            text = font.render("0.0", True, (0, 255, 0))
+            self.window.blit(text,(0,445))
             while i != self.scale_times:
-		i += 1
-		text = font.render(str(self.scale_value * i), True, (0, 255, 0))
-		self.window.blit(text,(0,445-(self.scale_height * i)))
-	pygame.display.flip()
+                i += 1
+                text = font.render(str(self.scale_value * i), True, (0, 255, 0))
+                self.window.blit(text,(0,445-(self.scale_height * i)))
+        pygame.display.flip()
     def draw_lines(self, char_c):
-	a_coord = (0,0)
-	b_coord = (0,0)
-	x = 25
+        a_coord = (0,0)
+        b_coord = (0,0)
+        x = 25
         for i in char_c:
-	    x += self.SCALE_WIDTH
-	    a_coord = (x,self.HEIGHT - (i*self.scale_data_value) - 25)
-	    if b_coord != (0,0):
-		pygame.draw.line(self.window, (0, 255, 0), b_coord, a_coord)
-	    b_coord = a_coord
-	pygame.display.flip()
+            x += self.SCALE_WIDTH
+            a_coord = (x,self.HEIGHT - (i*self.scale_data_value) - 25)
+            if b_coord != (0,0):
+        	pygame.draw.line(self.window, (0, 255, 0), b_coord, a_coord)
+            b_coord = a_coord
+        pygame.display.flip()
     def more_info(self,char_c, files,chars):
         font = pygame.font.SysFont(None, 20)
         text = font.render("Total letters:" + str(sum(char_c)), True, (0, 255, 0))
@@ -66,9 +66,8 @@ class PaintGraph:
 graph = PaintGraph()
 files = glob.glob("/home/gintas/pyth/files/*.txt")
 characters = ("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
-	      "p","q","r","s","t","u","v","w","x","y","z")
+              "p","q","r","s","t","u","v","w","x","y","z")
 charcount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
-
 for i in files:
     file = open(i,"r")
     while True:
@@ -96,8 +95,7 @@ graph.y_value()
 graph.draw_lines(charcount)
 graph.more_info(charcount,files,characters)
 while True: 
-   for event in pygame.event.get(): 
-      if event.type == pygame.QUIT:
- 	  print event
-          sys.exit(0) 
-        
+    for event in pygame.event.get(): 
+        if event.type == pygame.QUIT:
+            print event
+            sys.exit(0) 
