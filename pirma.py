@@ -9,33 +9,35 @@ class PaintGraph:
     scale_times = 0
     scale_value = 0.0
     window = pygame.display.set_mode((WIDTH, HEIGHT))
-    def init_graph(self,window,height,width,chars,scale_w):
-        pygame.draw.line(window, (0, 255, 0), (35, 10), (35, height-25))
-        pygame.draw.line(window, (0, 255, 0), (35, height-25), (width-25,
-                         height-25))
+    def init_graph(self,chars):
+        pygame.draw.line(self.window, (0, 255, 0), (35, 10), (35, self.HEIGHT-25))
+        pygame.draw.line(self.window, (0, 255, 0), (35, self.HEIGHT-25), (self.WIDTH-25,
+                         self.HEIGHT-25))
 	font = pygame.font.SysFont(None, 25)
 	x = 25
         for char in chars:
 	    text = font.render(char, True, (0, 255, 0))
-	    x += scale_w
-	    window.blit(text,(x,458))
+	    x += self.SCALE_WIDTH
+	    self.window.blit(text,(x,458))
 	pygame.display.flip()
-    def y_value(self, window, scale_v, scale_t, scale_h):
+    def y_value(self):
 	font = pygame.font.SysFont(None, 25)
         i = 0
-        if scale_t == 0:
+        if self.scale_times == 0:
             text = font.render(chr(48), True, (0, 255, 0))
-	    window.blit(text,(10,445))
+	    self.window.blit(text,(10,445))
 	    text = font.render(chr(49), True, (0, 255, 0))
-	    window.blit(text,(10,0))
+	    self.window.blit(text,(10,0))
         else:
 	    text = font.render("0.0", True, (0, 255, 0))
-	    window.blit(text,(0,445))
-            while i != scale_t:
+	    self.window.blit(text,(0,445))
+            while i != self.scale_times:
 		i += 1
-		text = font.render(str(scale_v * i), True, (0, 255, 0))
-		window.blit(text,(0,445-(scale_h * i)))
+		text = font.render(str(self.scale_value * i), True, (0, 255, 0))
+		self.window.blit(text,(0,445-(self.scale_height * i)))
 	pygame.display.flip()
+    def draw_lines(self, char_c):
+        pass
 graph = PaintGraph()
 files = glob.glob("/home/gintas/pyth/files/*.txt")
 characters = ("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
@@ -62,7 +64,8 @@ else:
     graph.scale_height = (graph.HEIGHT -35) / max(charcount)
     graph.scale_times = max(charcount)
     graph.scale_value = 1.0
-graph.init_graph(graph.window,graph.HEIGHT,graph.WIDTH,characters,graph.SCALE_WIDTH)
-graph.y_value(graph.window, graph.scale_value, graph.scale_times, graph.scale_height)
+graph.init_graph(characters)
+graph.y_value()
+graph.draw_lines(charcount )
 inp = input("press enter")
         
