@@ -1,9 +1,11 @@
 import glob
+import sys
 import pygame
 pygame.init()
 class PaintGraph:
     WIDTH = 629
     HEIGHT = 480
+    scale_data_value = 0
     scale_height = 0
     SCALE_WIDTH = 22
     scale_times = 0
@@ -42,7 +44,7 @@ class PaintGraph:
 	x = 25
         for i in char_c:
 	    x += self.SCALE_WIDTH
-	    a_coord = (x,self.HEIGHT - (i*self.scale_height) - 25)
+	    a_coord = (x,self.HEIGHT - (i*self.scale_data_value) - 25)
 	    if b_coord != (0,0):
 		pygame.draw.line(self.window, (0, 255, 0), b_coord, a_coord)
 	    b_coord = a_coord
@@ -64,17 +66,23 @@ for i in files:
             if char.lower() in characters:
                 charcount[characters.index(char.lower())] += 1
 if max(charcount) > 10:
+    graph.scale_data_value = float((graph.HEIGHT -35)) / max(charcount)
     graph.scale_height = 44
     graph.scale_times = 10
     graph.scale_value = float(max(charcount))/graph.scale_times
 elif max(charcount) == 0:
     graph.scale_height == 0
 else:
+    graph.scale_data_value = float((graph.HEIGHT -35)) / max(charcount)
     graph.scale_height = (graph.HEIGHT -35) / max(charcount)
     graph.scale_times = max(charcount)
     graph.scale_value = 1.0
 graph.init_graph(characters)
 graph.y_value()
 graph.draw_lines(charcount )
-inp = input("press enter")
+while True: 
+   for event in pygame.event.get(): 
+      if event.type == pygame.QUIT:
+ 	  print event
+          sys.exit(0) 
         
