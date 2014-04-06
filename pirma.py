@@ -3,7 +3,7 @@ import sys
 import pygame
 pygame.init()
 class PaintGraph:
-    WIDTH = 629
+    WIDTH = 759
     HEIGHT = 480
     scale_data_value = 0
     scale_height = 0
@@ -13,7 +13,7 @@ class PaintGraph:
     window = pygame.display.set_mode((WIDTH, HEIGHT))
     def init_graph(self,chars):
         pygame.draw.line(self.window, (0, 255, 0), (35, 10), (35, self.HEIGHT-25))
-        pygame.draw.line(self.window, (0, 255, 0), (35, self.HEIGHT-25), (self.WIDTH-25,
+        pygame.draw.line(self.window, (0, 255, 0), (35, self.HEIGHT-25), (self.WIDTH-155,
                          self.HEIGHT-25))
 	font = pygame.font.SysFont(None, 25)
 	x = 25
@@ -49,6 +49,20 @@ class PaintGraph:
 		pygame.draw.line(self.window, (0, 255, 0), b_coord, a_coord)
 	    b_coord = a_coord
 	pygame.display.flip()
+    def more_info(self,char_c, files,chars):
+        font = pygame.font.SysFont(None, 20)
+        text = font.render("Total letters:" + str(sum(char_c)), True, (0, 255, 0))
+        self.window.blit(text,(607,20))
+        text = font.render("Total files:" + str(len(files)), True, (0, 255, 0))
+        self.window.blit(text,(607,35))
+        text = font.render("Letter repetitions", True, (0, 255, 0))
+        self.window.blit(text,(607,50))
+        y = 50
+        for i in chars:
+            y += 15
+            text = font.render(i + "  " + str(char_c[chars.index(i)]), True, (0, 255, 0))
+            self.window.blit(text,(607,y))
+        pygame.display.flip()
 graph = PaintGraph()
 files = glob.glob("/home/gintas/pyth/files/*.txt")
 characters = ("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
@@ -79,7 +93,8 @@ else:
     graph.scale_value = 1.0
 graph.init_graph(characters)
 graph.y_value()
-graph.draw_lines(charcount )
+graph.draw_lines(charcount)
+graph.more_info(charcount,files,characters)
 while True: 
    for event in pygame.event.get(): 
       if event.type == pygame.QUIT:
