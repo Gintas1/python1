@@ -37,7 +37,16 @@ class PaintGraph:
 		self.window.blit(text,(0,445-(self.scale_height * i)))
 	pygame.display.flip()
     def draw_lines(self, char_c):
-        pass
+	a_coord = (0,0)
+	b_coord = (0,0)
+	x = 25
+        for i in char_c:
+	    x += self.SCALE_WIDTH
+	    a_coord = (x,self.HEIGHT - (i*self.scale_height) - 25)
+	    if b_coord != (0,0):
+		pygame.draw.line(self.window, (0, 255, 0), b_coord, a_coord)
+	    b_coord = a_coord
+	pygame.display.flip()
 graph = PaintGraph()
 files = glob.glob("/home/gintas/pyth/files/*.txt")
 characters = ("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
