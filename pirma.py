@@ -1,6 +1,7 @@
 import glob
 import sys
 import pygame
+import string
 pygame.init()
 
 
@@ -79,10 +80,7 @@ class PaintGraph:  # class for gui
 graph = PaintGraph()
 input_dir = sys.argv[1]
 files = glob.glob(input_dir + "/*.txt")
-characters = {"a": 0, "b": 0, "c": 0, "d": 0, "e": 0, "f": 0, "g": 0, "h": 0,
-              "i": 0, "j": 0, "k": 0, "l": 0, "m": 0, "n": 0, "o": 0, "p": 0,
-              "q": 0, "r": 0, "s": 0, "t": 0, "u": 0, "v": 0, "w": 0, "x": 0,
-              "y": 0, "z": 0}
+characters = {}
 
 for i in files:
     file = open(i, "r")
@@ -91,9 +89,10 @@ for i in files:
         if char == '':
             file.close()
             break
-        else:
-            if char.lower() in characters:
-                characters[char.lower()] += 1
+        elif char.isalpha() and char.lower() in characters:
+            characters[char.lower()] += 1
+        elif char.isalpha():
+            characters[char.lower()] = 1
 
 if max(characters) > 10:  # scaling
     graph.scale_data_value = float((graph.HEIGHT - 35)) / \
