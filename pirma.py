@@ -4,7 +4,7 @@ import pygame
 pygame.init()
 
 
-class PaintGraph: #class for gui
+class PaintGraph:  # class for gui
     WIDTH = 759
     HEIGHT = 480
     scale_data_value = 0
@@ -14,7 +14,7 @@ class PaintGraph: #class for gui
     scale_value = 0.0
     window = pygame.display.set_mode((WIDTH, HEIGHT))
 
-    def init_graph(self, chars): #initialized graph with x axis values 
+    def init_graph(self, chars):  # initialized graph with x axis values
         pygame.draw.line(self.window, (0, 255, 0), (35, 10),
                         (35, self.HEIGHT-25))
         pygame.draw.line(self.window, (0, 255, 0), (35, self.HEIGHT-25),
@@ -27,7 +27,7 @@ class PaintGraph: #class for gui
             self.window.blit(text, (x, 458))
         pygame.display.flip()
 
-    def y_value(self): # method scales and creates y axis values
+    def y_value(self):  # method scales and creates y axis values
         font = pygame.font.SysFont(None, 25)
         i = 0
         if self.scale_times == 0:
@@ -45,21 +45,21 @@ class PaintGraph: #class for gui
                 self.window.blit(text, (0, 445-(self.scale_height * i)))
         pygame.display.flip()
 
-    def draw_lines(self, char_c): #main graph is drawn
+    def draw_lines(self, char_c):  # main graph is drawn
         a_coord = (0, 0)
         b_coord = (0, 0)
         x = 25
-        for i in char_c:
+        for i in char_c.values():
             x += self.SCALE_WIDTH
             a_coord = (x, self.HEIGHT - (i*self.scale_data_value) - 25)
             if b_coord != (0, 0):
-        	pygame.draw.line(self.window, (0, 255, 0), b_coord, a_coord)
+                pygame.draw.line(self.window, (0, 255, 0), b_coord, a_coord)
             b_coord = a_coord
         pygame.display.flip()
 
-    def more_info(self,char_c, files,chars): #additional data is provided to user
+    def more_info(self, files, chars):  # additional data is provided
         font = pygame.font.SysFont(None, 20)
-        text = font.render("Total letters:" + str(sum(char_c)), True,
+        text = font.render("Total letters:" + str(sum(chars.values())), True,
                           (0, 255, 0))
         self.window.blit(text, (607, 20))
         text = font.render("Total files:" + str(len(files)), True,
@@ -68,19 +68,21 @@ class PaintGraph: #class for gui
         text = font.render("Letter repetitions", True, (0, 255, 0))
         self.window.blit(text, (607, 50))
         y = 50
-        for i in chars:
+        for i in chars.keys():
             y += 15
-            text = font.render(i + "  " + str(char_c[chars.index(i)]), True,
+            text = font.render(i + "  " + str(chars[i]), True,
                                (0, 255, 0))
             self.window.blit(text, (607, y))
         pygame.display.flip()
 
 
 graph = PaintGraph()
-files = glob.glob("/home/gintas/pyth/files/*.txt")
-characters = ("a","b","c","d","e","f","g","h","i","j","k","l","m","n","o",
-              "p","q","r","s","t","u","v","w","x","y","z")
-charcount = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+input_dir = sys.argv[1]
+files = glob.glob(input_dir + "/*.txt")
+characters = {"a": 0, "b": 0, "c": 0, "d": 0, "e": 0, "f": 0, "g": 0, "h": 0,
+              "i": 0, "j": 0, "k": 0, "l": 0, "m": 0, "n": 0, "o": 0, "p": 0,
+              "q": 0, "r": 0, "s": 0, "t": 0, "u": 0, "v": 0, "w": 0, "x": 0,
+              "y": 0, "z": 0}
 
 for i in files:
     file = open(i, "r")
@@ -91,28 +93,30 @@ for i in files:
             break
         else:
             if char.lower() in characters:
-                charcount[characters.index(char.lower())] += 1
+                characters[char.lower()] += 1
 
-if max(charcount) > 10: # scaling
-    graph.scale_data_value = float((graph.HEIGHT -35)) / max(charcount)
+if max(characters) > 10:  # scaling
+    graph.scale_data_value = float((graph.HEIGHT - 35)) / \
+        max(characters.values())
     graph.scale_height = 44
     graph.scale_times = 10
-    graph.scale_value = float(max(charcount))/graph.scale_times
-elif max(charcount) == 0:
+    graph.scale_value = float(max(characters.values()))/graph.scale_times
+elif max(characters.values()) == 0:
     graph.scale_height == 0
 else:
-    graph.scale_data_value = float((graph.HEIGHT -35)) / max(charcount)
-    graph.scale_height = (graph.HEIGHT -35) / max(charcount)
-    graph.scale_times = max(charcount)
+    graph.scale_data_value = float((graph.HEIGHT - 35)) / \
+        max(characters.values())
+    graph.scale_height = (graph.HEIGHT - 35) / max(characters.values())
+    graph.scale_times = max(characters.values())
     graph.scale_value = 1.0
 
 graph.init_graph(characters)
 graph.y_value()
-graph.draw_lines(charcount)
-graph.more_info(charcount, files, characters)
-
-while True: 
-    for event in pygame.event.get(): 
+graph.draw_lines(characters)
+graph.more_info(files, characters)
+while True:
+    for event in pygame.event.get():
         if event.type == pygame.QUIT:
             print event
-            sys.exit(0) 
+            sys.exit(0)
+
